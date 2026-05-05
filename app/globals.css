@@ -126,7 +126,8 @@
 }
 
 .top10-card {
-  background-color: #056c5c;
+  background-color: oklch(0.2 0 0);
+  color: oklch(0.72 0 0);
 }
 
 @layer base {

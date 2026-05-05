@@ -4,7 +4,7 @@ export async function GET(request: Request) {
 
   try {
     const res = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?page=${page}&language=pt-BR`,
+      `https://api.themoviedb.org/3/trending/movie/day?page=${page}&language=pt-BR`,
       {
         headers: {
           Authorization: "Bearer " + process.env.AUTHORIZATION_TOKEN,

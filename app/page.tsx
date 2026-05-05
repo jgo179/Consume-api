@@ -17,9 +17,7 @@ import { FaStar } from "react-icons/fa";
 import type { Movie, MovieDetails } from "./types/movie";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -27,17 +25,15 @@ import {
 } from "@/components/ui/sheet";
 import { FormatDate } from "@/utils/FormatDate";
 import { GetDetails } from "@/components/GetDetails";
-import { Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { GetTop10 } from "@/components/GetTop10";
 import { Separator } from "@/components/ui/separator";
+import { RecentMovies } from "@/components/RecentMovies";
 
 export default function Home() {
   const [page, setPage] = useState(1);
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [recentMovies, setRecentMovies] = useState<Movie[]>([]);
+
   const [moviesDetails, setMoviesDetails] = useState<MovieDetails>();
   const [idDetails, setIdDetails] = useState(0);
 
@@ -54,10 +50,6 @@ export default function Home() {
   }, [page]);
 
   useEffect(() => {
-    GetTop10().then((data) => setRecentMovies(data));
-  }, []);
-
-  useEffect(() => {
     GetDetails({ id: idDetails }).then((data) => setMoviesDetails(data));
   }, [idDetails]);
 
@@ -69,35 +61,16 @@ export default function Home() {
         </h1>
       </header>
 
-      <div className="max-w-4xl mx-auto">
-        <div className="p-4 rounded mb-8 movie-card">
-          <h2 className="text-2xl font-bold">Lançamentos</h2>
-          <ScrollArea>
-            <div className="flex gap-4 pb-4">
-              {recentMovies.map((movie: Movie) => (
-                <div
-                  key={movie.id}
-                  className="flex flex-col space-y-2 m-2 border rounded w-48"
-                >
-                  <Image
-                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                    alt="capa"
-                    width={200}
-                    height={200}
-                    loading="eager"
-                  />
-                </div>
-              ))}
-            </div>
-            <ScrollBar orientation="horizontal" forceMount />
-          </ScrollArea>
-        </div>
+      <div className="max-w-6xl mx-auto">
+        <RecentMovies />
+
         <Separator />
+        <h2 className="text-2xl font-bold mt-2">Trending</h2>
         <div className="flex flex-wrap justify-center gap-4">
           {movies.map((movie: Movie) => (
             <div
               key={movie.id}
-              className="flex flex-col space-y-2 m-2 border rounded w-48 pb-2 movie-card"
+              className="flex flex-col space-y-2 m-2 border rounded w-48 movie-card"
             >
               <Sheet>
                 <SheetTrigger onClick={() => handleOpenDetails(movie.id)}>
@@ -107,9 +80,10 @@ export default function Home() {
                     width={200}
                     height={200}
                     loading="eager"
+                    className="cursor-pointer"
                   />
                 </SheetTrigger>
-                <SheetContent side="right">
+                <SheetContent className="min-w-[450]">
                   <SheetHeader className="justify-center items-center">
                     <SheetTitle className="text-2xl font-bold">
                       {movie.title}
@@ -127,10 +101,11 @@ export default function Home() {
                     />
                     {moviesDetails?.videos?.results[0] ? (
                       <iframe
-                        width="350"
-                        height="240"
+                        width="400"
+                        height="220"
                         src={`https://www.youtube.com/embed/${moviesDetails?.videos?.results[0].key}`}
                         title="YouTube Trailer"
+                        allowFullScreen
                       />
                     ) : (
                       <Image
@@ -167,12 +142,16 @@ export default function Home() {
                   </SheetFooter>
                 </SheetContent>
               </Sheet>
-              <p className="flex flex-row items-center space-x-2 text-sm ">
-                <FaStar color="yellow" className="mr-1" />
-                {FormatNumber(movie.vote_average)}
-              </p>
-              <p className="text-sm font-bold">{movie.title}</p>
-              <p className="text-sm text-gray-400">Votos: {movie.vote_count}</p>
+              <div className="p-2">
+                <p className="flex flex-row items-center space-x-2 text-sm">
+                  <FaStar color="yellow" className="mr-1" />
+                  {FormatNumber(movie.vote_average)}
+                </p>
+                <p className="text-sm font-bold">{movie.title}</p>
+                <p className="text-sm text-gray-400 ">
+                  Votos: {movie.vote_count}
+                </p>
+              </div>
             </div>
           ))}
         </div>

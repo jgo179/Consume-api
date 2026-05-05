@@ -1,7 +1,7 @@
 export async function GET() {
   try {
     const res = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?include_adult=false&language=pt-BR&page=1&sort_by=vote_average.desc&vote_count.gte=200&sort_by=release_date.desc`,
+      `https://api.themoviedb.org/3/discover/movie?include_adult=false&language=pt-BR&page=1&vote_count.gte=200&sort_by=release_date.desc`,
       {
         headers: {
           Authorization: "Bearer " + process.env.AUTHORIZATION_TOKEN,
