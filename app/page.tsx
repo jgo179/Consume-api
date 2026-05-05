@@ -30,6 +30,9 @@ import { GetDetails } from "@/components/GetDetails";
 import { Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { GetTop10 } from "@/components/GetTop10";
+import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
   const [page, setPage] = useState(1);
@@ -51,6 +54,10 @@ export default function Home() {
   }, [page]);
 
   useEffect(() => {
+    GetTop10().then((data) => setRecentMovies(data));
+  }, []);
+
+  useEffect(() => {
     GetDetails({ id: idDetails }).then((data) => setMoviesDetails(data));
   }, [idDetails]);
 
@@ -63,10 +70,29 @@ export default function Home() {
       </header>
 
       <div className="max-w-4xl mx-auto">
-        <div>
-          <h2>Lançamentos</h2>
-          <div></div>
+        <div className="p-4 rounded mb-8 movie-card">
+          <h2 className="text-2xl font-bold">Lançamentos</h2>
+          <ScrollArea>
+            <div className="flex gap-4 pb-4">
+              {recentMovies.map((movie: Movie) => (
+                <div
+                  key={movie.id}
+                  className="flex flex-col space-y-2 m-2 border rounded w-48"
+                >
+                  <Image
+                    src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                    alt="capa"
+                    width={200}
+                    height={200}
+                    loading="eager"
+                  />
+                </div>
+              ))}
+            </div>
+            <ScrollBar orientation="horizontal" forceMount />
+          </ScrollArea>
         </div>
+        <Separator />
         <div className="flex flex-wrap justify-center gap-4">
           {movies.map((movie: Movie) => (
             <div
@@ -83,22 +109,25 @@ export default function Home() {
                     loading="eager"
                   />
                 </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader>
-                    <SheetTitle className="text-2xl mb-2 font-bold">
+                <SheetContent side="right">
+                  <SheetHeader className="justify-center items-center">
+                    <SheetTitle className="text-2xl font-bold">
                       {movie.title}
                     </SheetTitle>
+                  </SheetHeader>
+
+                  <div className="flex-1 overflow-y-auto over ml-4 mr-4 text-sm text-muted-foreground ">
                     <Image
                       src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
                       alt="capa"
-                      width={300}
-                      height={300}
+                      width={400}
+                      height={400}
                       loading="eager"
                       className="mb-2"
                     />
                     {moviesDetails?.videos?.results[0] ? (
                       <iframe
-                        width="320"
+                        width="350"
                         height="240"
                         src={`https://www.youtube.com/embed/${moviesDetails?.videos?.results[0].key}`}
                         title="YouTube Trailer"
@@ -113,29 +142,26 @@ export default function Home() {
                         className="mb-4"
                       />
                     )}
-
-                    <SheetDescription className="align-bottom items-end h-full"></SheetDescription>
-                  </SheetHeader>
-                  <div className="flex flex-col justify-end text-sm text-muted-foreground pr-4 pl-4 h-full">
-                    Data de lançamento: {FormatDate(movie.release_date)}
-                    <br />
-                    <div className="pt-4 pb-4">
+                    <div className="pt-2 pb-1">
+                      Data de lançamento: {FormatDate(movie.release_date)}
+                      <br />
                       {moviesDetails?.genres?.map((genre) => (
-                        <Badge key={genre.id} className="mr-2">
+                        <Badge key={genre.id} className="mr-0.5 mt-1 mb-1">
                           {genre.name}
                         </Badge>
                       ))}
                     </div>
                     {movie.overview}
                   </div>
-                  <SheetFooter>
+
+                  <SheetFooter className="flex-none mr-4 ml-4 font-bold text-2xl">
                     <Button type="button" asChild>
                       <a
-                        href={moviesDetails?.homepage}
+                        href={`https://www.themoviedb.org/movie/${movie.id}?language=pt-BR`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Site Oficial
+                        Mais detalhes
                       </a>
                     </Button>
                   </SheetFooter>

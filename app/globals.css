@@ -125,6 +125,10 @@
   background-color: var(--movie-card-background);
 }
 
+.top10-card {
+  background-color: #056c5c;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
