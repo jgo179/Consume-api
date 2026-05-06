@@ -9,8 +9,7 @@ export type Movie = {
   release_date: string;
 };
 
-export type MovieDetails = {
-  id: number;
+export interface MovieDetails extends Movie {
   genres: { id: number; name: string }[];
   homepage: string;
   videos: {
@@ -19,4 +18,4 @@ export type MovieDetails = {
       key: string;
     }[];
   };
-};
+}
