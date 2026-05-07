@@ -27,7 +27,7 @@ export function TrendingMovies({ page }: { page: number }) {
   return (
     <>
       <DetailsMovie id={idDetails} onClose={handleCloseDetails} />
-      <h2 className="text-2xl font-bold mt-2">Trending</h2>
+      <h2 className="text-2xl font-bold mt-2 ml-8">Trending</h2>
       <div className="flex flex-wrap justify-center gap-4">
         {movies.map((movie: Movie) => (
           <div

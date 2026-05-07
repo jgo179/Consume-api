@@ -7,7 +7,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "./ui/sheet";
 import Image from "next/image";
 import { Button } from "./ui/button";
