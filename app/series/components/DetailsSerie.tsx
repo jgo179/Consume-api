@@ -60,7 +60,7 @@ export function DetailsSerie({ id, onClose }: Props) {
               alt="poster"
               width={400}
               height={400}
-              className="mb-4"
+              className="mb-4 w-full h-max-[400px]"
             />
           )}
           <div className="pt-2 pb-2">

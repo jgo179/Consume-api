@@ -10,6 +10,6 @@ export async function GetRecentMovies() {
 
 export async function GetDetails({ id }: { id: number }) {
   if (!id) return;
-  const data = await fetch(`/api/movies/moviesDetails?id=${id}`);
+  const data = await fetch(`/api/movies/movieDetails?id=${id}`);
   return data.json();
 }
