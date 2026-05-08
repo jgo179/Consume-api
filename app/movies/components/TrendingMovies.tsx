@@ -1,11 +1,11 @@
 "use client";
 
-import type { Movie } from "@/app/types/movie";
+import type { Movie } from "@/app/_types/movie";
 import FormatNumber from "@/utils/FormatNumber";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { GetMovies } from "./GetMovies";
-import Image from "next/image";
+import { GetMovies } from "../services";
 import { DetailsMovie } from "./DetailsMovie";
 
 export function TrendingMovies({ page }: { page: number }) {

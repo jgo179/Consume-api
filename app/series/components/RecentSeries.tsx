@@ -1,20 +1,22 @@
 "use client";
 
+import type { Serie } from "@/app/_types/serie";
 import { FormatDate } from "@/utils/FormatDate";
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import type { Movie } from "@/app/types/movie";
-import { GetRecentMovies } from "./GetRecentMovies";
-import { DetailsMovie } from "./DetailsMovie";
+import { ScrollArea, ScrollBar } from "../../../components/ui/scroll-area";
 
-export function RecentMovies() {
-  const [recentMovies, setRecentMovies] = useState<Movie[]>([]);
+import { GetRecentSeries } from "../services";
+import { DetailsSerie } from "./DetailsSerie";
+
+export function RecentSeries() {
+  const [recentSeries, setRecentSeries] = useState<Serie[]>([]);
   const [idDetails, setIdDetails] = useState(0);
 
-  const sortedMovies = [...recentMovies].sort((a, b) => {
+  const sortedSeries = [...recentSeries].sort((a, b) => {
     return (
-      new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
+      new Date(b.first_air_date).getTime() -
+      new Date(a.first_air_date).getTime()
     );
   });
 
@@ -27,30 +29,30 @@ export function RecentMovies() {
   }
 
   useEffect(() => {
-    GetRecentMovies().then((data) => setRecentMovies(data));
+    GetRecentSeries().then((data) => setRecentSeries(data));
   }, []);
 
   return (
     <>
-      <DetailsMovie id={idDetails} onClose={handleCloseDetails} />
+      <DetailsSerie id={idDetails} onClose={handleCloseDetails} />
       <div className="p-4 rounded mb-2 top10-card">
         <h2 className="text-2xl font-bold ml-2">Lançamentos</h2>
         <ScrollArea>
           <div className="flex gap-4 pb-4">
-            {sortedMovies.map((movie: Movie) => (
-              <div key={movie.id} className="flex flex-col space-y-2 m-2 w-48">
+            {sortedSeries.map((serie: Serie) => (
+              <div key={serie.id} className="flex flex-col space-y-2 m-2 w-48">
                 <Image
-                  src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                  src={`https://image.tmdb.org/t/p/original${serie.poster_path}`}
                   alt="capa"
                   width={200}
                   height={200}
                   loading="eager"
                   className="cursor-pointer"
-                  onClick={() => handleOpenDetails(movie.id)}
+                  onClick={() => handleOpenDetails(serie.id)}
                 />
-                <h3 className="font-bold">{movie.title}</h3>
+                <h3 className="font-bold">{serie.title}</h3>
                 <span className="font-bold text-sm mt-auto">
-                  {FormatDate(movie.release_date)}
+                  {FormatDate(serie.first_air_date)}
                 </span>
               </div>
             ))}

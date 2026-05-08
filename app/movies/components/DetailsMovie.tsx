@@ -1,18 +1,19 @@
 "use client";
 
-import type { MovieDetails } from "@/app/types/movie";
+import type { MovieDetails } from "@/app/_types/movie";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { Badge } from "../../../components/ui/badge";
+import { Button } from "../../../components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "./ui/sheet";
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { GetDetails } from "./GetDetails";
-import { useEffect, useState } from "react";
+} from "../../../components/ui/sheet";
+import { GetDetails } from "../services";
 
 type Props = {
   id: number;
@@ -34,6 +35,7 @@ export function DetailsMovie({ id, onClose }: Props) {
           <SheetTitle className="text-2xl font-bold">
             {moviesDetails?.title}
           </SheetTitle>
+          <SheetDescription></SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto ml-4 mr-4 text-lg text-muted-foreground ">
@@ -41,8 +43,8 @@ export function DetailsMovie({ id, onClose }: Props) {
             src={`https://image.tmdb.org/t/p/original${moviesDetails?.poster_path}`}
             alt="capa do filme"
             width={400}
-            height={400}
-            className="mb-2"
+            height={600}
+            className="mb-2 w-full h-max-[400px]"
           />
           {moviesDetails?.videos?.results[0] ? (
             <iframe
@@ -55,15 +57,13 @@ export function DetailsMovie({ id, onClose }: Props) {
           ) : (
             <Image
               src={`https://image.tmdb.org/t/p/original${moviesDetails?.backdrop_path}`}
-              alt="capa"
+              alt="poster"
               width={400}
               height={400}
               className="mb-4"
             />
           )}
-          <div className="pt-2 pb-1">
-            {/* Data de lançamento: {FormatDate(moviesDetails?.release_date)} */}
-            <br />
+          <div className="pt-2 pb-2">
             {moviesDetails?.genres?.map((genre) => (
               <Badge key={genre.id} className="mr-0.5 mt-1 mb-1">
                 {genre.name}
